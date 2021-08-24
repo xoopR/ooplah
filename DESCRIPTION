@@ -1,0 +1,20 @@
+Package: R6misc
+Title: Helper functions for R6
+Version: 0.1.0.9000
+Authors@R:
+      c(person(given = "Raphael",
+             family = "Sonabend",
+             role = c("aut","cre"),
+             email = "raphaelsonabend@gmail.com",
+             comment = c(ORCID = "0000-0001-9225-4654")))
+Description: Helpers functions for coding with R6 including assertions, mapping functions, and re-usable design patterns.
+Imports: R6
+Suggests: testthat, devtools
+License: MIT + file LICENSE
+LazyData: true
+URL: https://xoopR.github.io/R6misc/, https://github.com/xoopR/R6misc
+BugReports: https://github.com/xoopR/R6misc/issues
+Encoding: UTF-8
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE, r6 = TRUE)
+SystemRequirements: C++11
