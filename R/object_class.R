@@ -18,6 +18,7 @@ object_class <- function(object, ancestor = 0) {
 
 #' @rdname object_class
 #' @param ... `ANY` \cr Passed to [get]
+#' @export
 get_object_class <- function(object, ancestor = 0, ...) {
     get(object_class(object, ancestor), ...)
 }
