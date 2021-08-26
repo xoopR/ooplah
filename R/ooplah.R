@@ -4,7 +4,7 @@
 #' @export
 NULL
 
-ooplahParent <- R6Class("ooplahParent")
+ooplahParent <- AbstractClass("ooplahParent")
 
 ooplah <- R6Class("ooplah",
   inherit = ooplahParent,
