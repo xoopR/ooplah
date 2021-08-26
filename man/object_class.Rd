@@ -10,7 +10,7 @@ object_class(object, ancestor = 0)
 
 get_object_class(object, ancestor = 0, ...)
 
-object_classes(objects)
+object_classes(..., lst = list(...))
 }
 \arguments{
 \item{object}{\code{ANY} \cr Object to get the class of}
@@ -19,6 +19,8 @@ object_classes(objects)
 to get the class for, see examples}
 
 \item{...}{\code{ANY} \cr Passed to \link{get}}
+
+\item{lst}{\code{(list(1))} \cr Alternative constructor with \code{list} of objects}
 
 \item{objects}{\code{ANY} \cr Objects to \code{vapply} over}
 }

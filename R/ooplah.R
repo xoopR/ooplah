@@ -4,7 +4,10 @@
 #' @export
 NULL
 
+ooplahParent <- R6Class("ooplahParent")
+
 ooplah <- R6Class("ooplah",
+  inherit = ooplahParent,
   public = list(
     hello = function() "Hello World, Ooplah!",
     oop = "oop",
@@ -22,7 +25,7 @@ ooplah <- R6Class("ooplah",
     }
   ),
   private = list(
-    .goodbye = function() cat("Goodbye World"),
+    .goodbye = "Goodbye World",
     .lgl = TRUE
   )
 )

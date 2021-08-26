@@ -23,12 +23,13 @@ object_class <- function(object, ancestor = 0) {
 #' @param ... `ANY` \cr Passed to [get]
 #' @export
 get_object_class <- function(object, ancestor = 0, ...) {
-    get(object_class(object, ancestor), ...)
+  get(object_class(object, ancestor), ...)
 }
 
 #' @rdname object_class
 #' @param objects `ANY` \cr Objects to `vapply` over
+#' @param lst `(list(1))` \cr Alternative constructor with `list` of objects
 #' @export
-object_classes <- function(objects) {
-  vcapply(objects, object_class)
+object_classes <- function(..., lst = list(...)) {
+  vcapply(lst, object_class)
 }

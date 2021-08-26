@@ -2,12 +2,12 @@
 % Please edit documentation in R/is.R6.R
 \name{is.R6}
 \alias{is.R6}
-\alias{assertR6}
+\alias{assert_R6}
 \title{Is 'x' a R6 object or class?}
 \usage{
 is.R6(x)
 
-assertR6(x)
+assert_R6(x)
 }
 \arguments{
 \item{x}{Object to test}

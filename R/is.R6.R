@@ -32,30 +32,30 @@ is.R6Object <- function(x) {
 
 #' @rdname is.R6
 #' @export
-assertR6 <- function(x) {
+assert_R6 <- function(x) {
   if (is.R6(x)) {
     invisible(x)
   } else {
-    stop(sprintf("%s is not an R6 class or object", deparse(x)))
+    stop(sprintf("'%s' is not an R6 class or object", deparse(substitute(x))))
   }
 }
 
 #' @rdname is.R6Object
 #' @export
-assertR6Object <- function(x) {
+assert_R6Object <- function(x) {
   if (is.R6Object(x)) {
     invisible(x)
   } else {
-    stop(sprintf("%s is not an R6 object", deparse(x)))
+    stop(sprintf("'%s' is not an R6 object", deparse(substitute(x))))
   }
 }
 
 #' @rdname is.R6Class
 #' @export
-assertR6Class <- function(x) {
+assert_R6Class <- function(x) {
   if (is.R6Class(x)) {
     invisible(x)
   } else {
-    stop(sprintf("%s is not an R6 class", deparse(x)))
+    stop(sprintf("'%s' is not an R6 class", deparse(substitute(x))))
   }
 }

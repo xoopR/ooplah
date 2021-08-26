@@ -101,7 +101,11 @@ loapply <- function(X, FUN, ...) {
     lapply(X, function(.x) {
       .f <- .x[[FUN]]
       if (is.function(.f) && ...length()) {
-        .f(...)
+        if (is.null(formals(.f))) {
+          .f()
+        } else {
+          .f(...)
+        }
       } else {
         .f
       }
