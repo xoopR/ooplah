@@ -19,8 +19,10 @@ DecoratorClass <- function() {
       parent.env(self) <- object
       ## Inherit from an abstract (in the truest sense of the word) 'Decorator'
       ##  class
-      class(self) <- c(class(self)[1], "Decorator",
-                       class(self)[2:length(class(self))])
+      if ("Decorator" %nin% class(self)) {
+        class(self) <- c(setdiff(class(self), "R6"), "Decorator", "R6")
+      }
+
       invisible(self)
     }
   }
@@ -34,7 +36,7 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 
 #' @export
 `$.Decorator` <- function(x, name) {
-  if (!is.na(out <- get0(name, x, ifnotfound = NA))) {
+  if (!identical(out <- get0(name, x, ifnotfound = NA), NA)) {
     out
   }
 }
@@ -42,7 +44,7 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 #' @export
 `$<-.Decorator` <- function(x, name, value, ...) {
   if (exists(name, x, inherits = FALSE)) {
-    NextMethod("$", object = x, name = name, value = value)
+    NextMethod("$<-", object = x, name = name, value = value)
   } else {
     parent.env(x)[[name]] <- value
   }
@@ -52,7 +54,7 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 
 #' @export
 `[[.Decorator` <- function(x, i, ...) {
-  if (!is.na(out <- get0(i, x, ifnotfound = NA))) {
+  if (!identical(out <- get0(i, x, ifnotfound = NA), NA)) {
     out
   }
 }
@@ -60,7 +62,7 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 #' @export
 `[[<-.Decorator` <- function(x, i, value, ...) {
   if (exists(i, x, inherits = FALSE)) {
-    NextMethod("[[", object = x, i = i, value = value)
+    NextMethod("[[<-", object = x, i = i, value = value)
   } else {
     parent.env(x)[[i]] <- value
   }
