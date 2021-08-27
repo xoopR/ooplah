@@ -3,5 +3,5 @@ test_that("can't construct an abstract class", {
 })
 
 test_that("can construct an abstract classes child", {
-  expect_true(inherits(ooplah$new(), "ooplahParent"))
+  expect_true(ooplah$new()$init)
 })

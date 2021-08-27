@@ -4,7 +4,20 @@
 #' @export
 NULL
 
-ooplahParent <- AbstractClass("ooplahParent")
+ooplahParent <- AbstractClass("ooplahParent",
+  public = list(
+    initialize = function(x) {
+      private$.init <- TRUE
+      invisible(self)
+    }
+  ),
+  active = list(
+    init = function() private$.init
+  ),
+  private = list(
+    .init = FALSE
+  )
+)
 
 ooplah <- R6Class("ooplah",
   inherit = ooplahParent,

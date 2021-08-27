@@ -9,17 +9,10 @@
 NULL
 
 AbstractClass <- function() {
-  abstract <- function(self) {
-    if (object_class(self) == classname) {
-      stop(sprintf(
-        "'%s' is an abstract class that can't be initialized.", classname),
-        call. = FALSE
-      )
-    }
-  }
 
   args <- as.list(match.call()[-1])
   public <- args$public
+  abstract <- .abstract(classname)
 
   if (length(public)) {
     if (is.null(init <- public$initialize)) {
@@ -39,3 +32,15 @@ AbstractClass <- function() {
   do.call(R6::R6Class, args)
 }
 formals(AbstractClass) <- formals(R6::R6Class)
+
+.abstract <- function(classname) {
+  function(self) {
+    if (object_class(self) == classname) {
+      stop(sprintf(
+        "'%s' is an abstract class that can't be initialized.", classname
+      ),
+      call. = FALSE
+      )
+    }
+  }
+}
