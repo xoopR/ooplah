@@ -8,6 +8,13 @@
 
 <title>Create an abstract R6 Class — AbstractClass • ooplah</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -42,7 +49,11 @@
 <meta property="og:title" content="Create an abstract R6 Class — AbstractClass" />
 <meta property="og:description" content="Creates an abstract R6 class by placing a thin wrapper around R6::R6Class
 which causes an error to be thrown if the class is directly constructed
+instead of one of its descendants.
+Creates an abstract R6 class by placing a thin wrapper around R6::R6Class
+which causes an error to be thrown if the class is directly constructed
 instead of one of its descendants." />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -114,12 +125,15 @@ instead of one of its descendants." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create an abstract R6 Class</h1>
-    <small class="dont-index">Source: <a href='https://github.com/xoopR/ooplah/blob/master/R/AbstractClass.R'><code>R/AbstractClass.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/xoopR/ooplah/blob/master/R/AbstractClass.R'><code>R/AbstractClass.R</code></a>, <a href='https://github.com/xoopR/ooplah/blob/master/R/DecoratorClass.R'><code>R/DecoratorClass.R</code></a></small>
     <div class="hidden name"><code>AbstractClass.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Creates an abstract R6 class by placing a thin wrapper around <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>
+which causes an error to be thrown if the class is directly constructed
+instead of one of its descendants.</p>
+<p>Creates an abstract R6 class by placing a thin wrapper around <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>
 which causes an error to be thrown if the class is directly constructed
 instead of one of its descendants.</p>
     </div>
@@ -129,6 +143,8 @@ instead of one of its descendants.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>All arguments of <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a> can be used as usual, see full
+details at <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>.</p>
+<p>All arguments of <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a> can be used as usual, see full
 details at <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>.</p>
 
   </div>
