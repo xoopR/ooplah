@@ -42,11 +42,11 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 }
 
 #' @export
-`$<-.Decorator` <- function(x, name, value, ...) {
-  if (exists(name, x, inherits = FALSE)) {
-    NextMethod("$<-", object = x, name = name, value = value)
+`$<-.Decorator` <- function(x, i, j, ..., value) {
+  if (exists(i, x, inherits = FALSE)) {
+    NextMethod("$<-", object = x, name = i, value = value)
   } else {
-    parent.env(x)[[name]] <- value
+    parent.env(x)[[i]] <- value
   }
 
   invisible(x)
@@ -60,7 +60,7 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 }
 
 #' @export
-`[[<-.Decorator` <- function(x, i, value, ...) {
+`[[<-.Decorator` <- function(x, i, j, ..., value) {
   if (exists(i, x, inherits = FALSE)) {
     NextMethod("[[<-", object = x, i = i, value = value)
   } else {

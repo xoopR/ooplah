@@ -10,6 +10,8 @@
 #' to get the class for, see examples
 #' @export
 #' @examples
+#' library(R6)
+#'
 #' class_a <- R6Class("class_a")
 #' class_b <- R6Class("class_b", inherit = class_a)
 #' class(class_b$new())
@@ -27,9 +29,9 @@ get_object_class <- function(object, ancestor = 0, ...) {
 }
 
 #' @rdname object_class
-#' @param objects `ANY` \cr Objects to `vapply` over
-#' @param lst `(list(1))` \cr Alternative constructor with `list` of objects
+#' @param ... `ANY` \cr Objects to `vapply` over
+#' @param objects `(list(1))` \cr Alternative constructor with `list` of objects
 #' @export
-object_classes <- function(..., lst = list(...)) {
-  vcapply(lst, object_class)
+object_classes <- function(..., objects = list(...)) {
+  vcapply(objects, object_class)
 }

@@ -10,7 +10,7 @@ object_class(object, ancestor = 0)
 
 get_object_class(object, ancestor = 0, ...)
 
-object_classes(..., lst = list(...))
+object_classes(..., objects = list(...))
 }
 \arguments{
 \item{object}{\code{ANY} \cr Object to get the class of}
@@ -18,11 +18,9 @@ object_classes(..., lst = list(...))
 \item{ancestor}{\code{(integer(1))} \cr If greater than 0 then the given ancestor
 to get the class for, see examples}
 
-\item{...}{\code{ANY} \cr Passed to \link{get}}
+\item{...}{\code{ANY} \cr Objects to \code{vapply} over}
 
-\item{lst}{\code{(list(1))} \cr Alternative constructor with \code{list} of objects}
-
-\item{objects}{\code{ANY} \cr Objects to \code{vapply} over}
+\item{objects}{\code{(list(1))} \cr Alternative constructor with \code{list} of objects}
 }
 \description{
 Find class of an object or an ancestor of the object. In contrast to \code{class}
@@ -34,6 +32,8 @@ either the class of the object itself, or the class of one of its ancestors.
 objects
 }
 \examples{
+library(R6)
+
 class_a <- R6Class("class_a")
 class_b <- R6Class("class_b", inherit = class_a)
 class(class_b$new())

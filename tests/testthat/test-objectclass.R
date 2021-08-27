@@ -13,5 +13,5 @@ test_that("get_object_class", {
 
 test_that("object_classes", {
   expect_equal(object_classes(objah, objah), rep("ooplah", 2))
-  expect_equal(object_classes(lst = list(objah, objah)), rep("ooplah", 2))
+  expect_equal(object_classes(objects = list(objah, objah)), rep("ooplah", 2))
 })
