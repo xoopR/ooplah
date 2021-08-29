@@ -1,4 +1,10 @@
 oopl <- ooplah$new()
+assign("dec", DecoratorClass("dec", public = list(
+  sleep = function() "Zzzz"
+), abstract = TRUE), envir = .GlobalEnv)
+assign("dec_child", DecoratorClass("dec_child", inherit = dec),
+       envir = .GlobalEnv)
+assign("obj_dec", dec_child$new(oopl), envir = .GlobalEnv)
 
 test_that("can create a decorator class", {
   dec <- DecoratorClass("dec", public = list(
@@ -7,15 +13,11 @@ test_that("can create a decorator class", {
   expect_equal(class(dec$new(oopl)), c("dec", "Decorator", "R6"))
 })
 
-dec <- DecoratorClass("dec", public = list(
-                      sleep = function() "Zzzz"), abstract = TRUE)
+
 
 test_that("cannot construct an abstractor decorator", {
   expect_error(dec$new(oopl), "abstract class")
 })
-
-dec_child <- DecoratorClass("dec_child", inherit = dec)
-obj_dec <- dec_child$new(oopl)
 
 test_that("can construct a decorator's child", {
   expect_equal(class(obj_dec),
