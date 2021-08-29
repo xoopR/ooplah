@@ -136,7 +136,7 @@ either the class of the object itself, or the class of one of its ancestors.</p>
 
 <span class='fu'>get_object_class</span><span class='op'>(</span><span class='va'>object</span>, ancestor <span class='op'>=</span> <span class='fl'>0</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>object_classes</span><span class='op'>(</span><span class='va'>...</span>, lst <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>object_classes</span><span class='op'>(</span><span class='va'>...</span>, objects <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,15 +152,11 @@ to get the class for, see examples</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p><code>ANY</code> <br /> Passed to <a href='https://rdrr.io/r/base/get.html'>get</a></p></td>
-    </tr>
-    <tr>
-      <th>lst</th>
-      <td><p><code>(list(1))</code> <br /> Alternative constructor with <code>list</code> of objects</p></td>
+      <td><p><code>ANY</code> <br /> Objects to <code>vapply</code> over</p></td>
     </tr>
     <tr>
       <th>objects</th>
-      <td><p><code>ANY</code> <br /> Objects to <code>vapply</code> over</p></td>
+      <td><p><code>(list(1))</code> <br /> Alternative constructor with <code>list</code> of objects</p></td>
     </tr>
     </table>
 
@@ -170,12 +166,17 @@ to get the class for, see examples</p></td>
 objects</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>class_a</span> <span class='op'>&lt;-</span> <span class='kw'>R6Class</span><span class='op'>(</span><span class='st'>"class_a"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in R6Class("class_a"): could not find function "R6Class"</span></div><div class='input'><span class='va'>class_b</span> <span class='op'>&lt;-</span> <span class='kw'>R6Class</span><span class='op'>(</span><span class='st'>"class_b"</span>, inherit <span class='op'>=</span> <span class='va'>class_a</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in R6Class("class_b", inherit = class_a): could not find function "R6Class"</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>class_b</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'class_b' not found</span></div><div class='input'><span class='fu'>object_class</span><span class='op'>(</span><span class='va'>class_b</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in object_class(class_b$new()): object 'class_b' not found</span></div><div class='input'><span class='fu'>object_class</span><span class='op'>(</span><span class='va'>class_b</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in object_class(class_b$new(), 1): object 'class_b' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r6.r-lib.org'>R6</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘R6’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:ooplah’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    is.R6, is.R6Class</span></div><div class='input'>
+<span class='va'>class_a</span> <span class='op'>&lt;-</span> <span class='kw'><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></span><span class='op'>(</span><span class='st'>"class_a"</span><span class='op'>)</span>
+<span class='va'>class_b</span> <span class='op'>&lt;-</span> <span class='kw'><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></span><span class='op'>(</span><span class='st'>"class_b"</span>, inherit <span class='op'>=</span> <span class='va'>class_a</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>class_b</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "class_b" "class_a" "R6"     </div><div class='input'><span class='fu'>object_class</span><span class='op'>(</span><span class='va'>class_b</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "class_b"</div><div class='input'><span class='fu'>object_class</span><span class='op'>(</span><span class='va'>class_b</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "class_a"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
