@@ -5,3 +5,5 @@
 .vscode
 README.html
 *.DS_Store
+.DS_Store
+CRAN-RELEASE
