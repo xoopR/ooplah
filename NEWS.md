@@ -1,3 +1,3 @@
-# ooplah 0.1.0.9000
+# ooplah 0.1.0
 
--  In development
+-  Initial release
