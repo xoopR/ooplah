@@ -1,5 +1,5 @@
 Package: ooplah
-Title: Helper functions for class object oriented programming
+Title: Helper Functions for Class Object-Oriented Programming
 Version: 0.1.0
 Authors@R:
     person(given = "Raphael",
@@ -14,9 +14,9 @@ Description: Helper functions for coding object-oriented programming with
 License: MIT + file LICENSE
 URL: https://xoopR.github.io/ooplah/, https://github.com/xoopR/ooplah
 BugReports: https://github.com/xoopR/ooplah/issues
-Imports: 
+Imports:
     R6
-Suggests: 
+Suggests:
     devtools,
     testthat
 Config/testthat/edition: 3
