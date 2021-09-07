@@ -49,9 +49,6 @@
 <meta property="og:title" content="Create an abstract R6 Class — AbstractClass" />
 <meta property="og:description" content="Creates an abstract R6 class by placing a thin wrapper around R6::R6Class
 which causes an error to be thrown if the class is directly constructed
-instead of one of its descendants.
-Creates an abstract R6 class by placing a thin wrapper around R6::R6Class
-which causes an error to be thrown if the class is directly constructed
 instead of one of its descendants." />
 <meta property="og:image" content="/logo.png" />
 
@@ -125,15 +122,12 @@ instead of one of its descendants." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create an abstract R6 Class</h1>
-    <small class="dont-index">Source: <a href='https://github.com/xoopR/ooplah/blob/master/R/AbstractClass.R'><code>R/AbstractClass.R</code></a>, <a href='https://github.com/xoopR/ooplah/blob/master/R/DecoratorClass.R'><code>R/DecoratorClass.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/xoopR/ooplah/blob/master/R/AbstractClass.R'><code>R/AbstractClass.R</code></a></small>
     <div class="hidden name"><code>AbstractClass.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Creates an abstract R6 class by placing a thin wrapper around <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>
-which causes an error to be thrown if the class is directly constructed
-instead of one of its descendants.</p>
-<p>Creates an abstract R6 class by placing a thin wrapper around <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>
 which causes an error to be thrown if the class is directly constructed
 instead of one of its descendants.</p>
     </div>
@@ -142,11 +136,32 @@ instead of one of its descendants.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>All arguments of <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a> can be used as usual, see full
-details at <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>.</p>
+    <p>An abstract class is a class that cannot be constructed directly.
+Instead they are used to define common fields/methods for child classes
+that inherit from them.</p>
 <p>All arguments of <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a> can be used as usual, see full
 details at <a href='https://r6.r-lib.org/reference/R6Class.html'>R6::R6Class</a>.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Gamma, E., Helm, R., Johnson, R., &amp; Vlissides, J. (1996).
+Design Patterns: Elements of Reusable Software.
+Addison-Wesley Professional Computing Series (p. 395).</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r6.r-lib.org'>R6</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘R6’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:ooplah’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    is.R6, is.R6Class</span></div><div class='input'>
+<span class='va'>ab</span> <span class='op'>&lt;-</span> <span class='fu'>AbstractClass</span><span class='op'>(</span><span class='st'>"abstract"</span>, public <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>hello <span class='op'>=</span> <span class='st'>"Hello World"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># errors</span>
+<span class='va'>ab</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>child</span> <span class='op'>&lt;-</span> <span class='kw'><a href='https://r6.r-lib.org/reference/R6Class.html'>R6Class</a></span><span class='op'>(</span><span class='st'>"child"</span>, inherit <span class='op'>=</span> <span class='va'>ab</span><span class='op'>)</span>
+<span class='va'>child</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>hello</span>
+</div><div class='output co'>#&gt; [1] "Hello World"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
