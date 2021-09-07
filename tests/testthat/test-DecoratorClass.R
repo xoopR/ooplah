@@ -1,13 +1,19 @@
 oopl <- ooplah$new()
-dec <- DecoratorClass("dec", public = list(
-  sleep = function() "Zzzz"
-), abstract = TRUE)
+dec <- DecoratorClass("dec",
+  public = list(
+    sleep = function() "Zzzz"
+  ),
+  active = list(test = function(x) {
+    if (missing(x)) private$.test else private$.test <- x
+  }),
+  private = list(.test = FALSE), abstract = TRUE
+)
 dec_child <- DecoratorClass("dec_child", inherit = dec)
 obj_dec <- dec_child$new(oopl)
 
 test_that("can create a decorator class", {
   expect_equal(class(DecoratorClass("dec")$new(oopl)),
-               c("dec", "ooplah", "ooplahParent", "Decorator", "R6"))
+               c("dec", "ooplah", "OoplahParent", "Decorator", "R6"))
 })
 
 test_that("cannot construct an abstractor decorator", {
@@ -17,10 +23,18 @@ test_that("cannot construct an abstractor decorator", {
 
 test_that("can construct a decorator's child", {
   expect_equal(class(obj_dec),
-                c("dec_child", "dec", "ooplah", "ooplahParent", "Decorator",
+                c("dec_child", "dec", "ooplah", "OoplahParent", "Decorator",
                   "R6"))
   expect_equal(obj_dec$sleep(), "Zzzz")
   expect_equal(obj_dec[["sleep"]](), "Zzzz")
+  expect_false(obj_dec$test)
+  expect_false(obj_dec[["test"]])
+  obj_dec[["test"]] <- TRUE
+  expect_true(obj_dec$test)
+  expect_true(obj_dec[["test"]])
+  obj_dec$test <- FALSE
+  expect_false(obj_dec$test)
+  expect_false(obj_dec[["test"]])
 })
 
 test_that("can access original methods/fields", {
@@ -77,4 +91,20 @@ test_that("can't clone a decorator", {
   expect_true(oopl2$logically)
   expect_false(oopl$logically)
   expect_false(dec$logically)
+})
+
+test_that("can't decorate twice", {
+  oop <- ooplah$new()
+
+  dec1 <- DecoratorClass("dec1")
+  dec2 <- DecoratorClass("dec2")
+
+  oop_dec1 <- dec1$new(oop)
+
+  expect_error(dec1$new(oop_dec1), "already decorated with")
+
+  oop_dec2 <- dec2$new(oop_dec1)
+
+  expect_error(dec1$new(oop_dec2), "already decorated with")
+  expect_error(dec2$new(oop_dec2), "already decorated with")
 })

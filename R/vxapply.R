@@ -1,5 +1,5 @@
 .vxapply <- function(type) {
-  function(X, FUN, ..., USE.NAMES = TRUE) {
+  function(X, FUN, ..., USE.NAMES = TRUE) { # nolint
     if (is.function(FUN)) {
       vapply(X, FUN, type, ..., USE.NAMES = USE.NAMES)
     } else {
@@ -91,9 +91,9 @@ vrapply <- .vxapply(raw(1))
 #' ## For R6 objects
 #' objs <- list(ooplah$new(), ooplah$new())
 #' # Public field
-#' loapply(objs, 'oop')
+#' loapply(objs, "oop")
 #' # Public method
-#' loapply(objs, 'hello')
+#' loapply(objs, "hello")
 loapply <- function(X, FUN, ...) {
   if (is.function(FUN)) {
     lapply(X, FUN, ...)

@@ -25,7 +25,7 @@ loapply(c(1, 2, 3), identity)
 ## For R6 objects
 objs <- list(ooplah$new(), ooplah$new())
 # Public field
-loapply(objs, 'oop')
+loapply(objs, "oop")
 # Public method
-loapply(objs, 'hello')
+loapply(objs, "hello")
 }

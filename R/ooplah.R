@@ -4,7 +4,7 @@
 #' @export
 NULL
 
-ooplahParent <- AbstractClass("ooplahParent",
+OoplahParent <- AbstractClass("OoplahParent",
   public = list(
     initialize = function(x) {
       private$.init <- TRUE
@@ -20,7 +20,7 @@ ooplahParent <- AbstractClass("ooplahParent",
 )
 
 ooplah <- R6Class("ooplah",
-  inherit = ooplahParent,
+  inherit = OoplahParent,
   public = list(
     hello = function() "Hello World, Ooplah!",
     oop = "oop",

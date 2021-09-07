@@ -1,6 +1,12 @@
 ## Test Results
 
-No NOTEs, WARNINGs, or ERRORs.
+No  WARNINGs, or ERRORs.
+
+NOTEs:
+
+* New submission
+* Possibly unsafe calls - unlockBinding. These are required for the function
+  which is specifically designed to modify the bindings of given environments
 
 ## Test environments
 

@@ -132,6 +132,12 @@ DecoratorClass <- function() {
       }
 
       parent.env(self) <- object
+
+      if (classname %in% class(object)) {
+        stop(sprintf("%s is already decorated with %s", as.character(object),
+                     as.character(self)))
+      }
+
       ## Inherit from an abstract (in the truest sense of the word) 'Decorator'
       ##  class
       class(self) <- c(setdiff(c(setdiff(class(self), "R6"), class(object)),
@@ -148,7 +154,6 @@ DecoratorClass <- function() {
     }
   }
 
-
   args <- as.list(match.call()[-1])
   args$public$initialize <- init(classname, self)
   args$abstract <- NULL
@@ -162,16 +167,16 @@ DecoratorClass <- function() {
 formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 
 #' @export
-`$.Decorator` <- function(x, name) {
+`$.Decorator` <- function(x, name) { # nolint
   if (!identical(out <- get0(name, x, ifnotfound = NA), NA)) {
     out
   }
 }
 
 #' @export
-`$<-.Decorator` <- function(x, i, j, ..., value) {
+`$<-.Decorator` <- function(x, i, j, ..., value) { # nolint
   if (exists(i, x, inherits = FALSE)) {
-    NextMethod("$<-", object = x, name = i, value = value)
+    NextMethod("$<-")
   } else {
     parent.env(x)[[i]] <- value
   }
@@ -180,16 +185,16 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 }
 
 #' @export
-`[[.Decorator` <- function(x, i, ...) {
+`[[.Decorator` <- function(x, i, ...) { # nolint
   if (!identical(out <- get0(i, x, ifnotfound = NA), NA)) {
     out
   }
 }
 
 #' @export
-`[[<-.Decorator` <- function(x, i, j, ..., value) {
+`[[<-.Decorator` <- function(x, i, j, ..., value) { # nolint
   if (exists(i, x, inherits = FALSE)) {
-    NextMethod("[[<-", object = x, i = i, value = value)
+    NextMethod("[[<-")
   } else {
     parent.env(x)[[i]] <- value
   }

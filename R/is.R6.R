@@ -5,7 +5,7 @@
 #' `R6` or `R6ClassGenerator`, otherwise returns `x` invisibly on assertion
 #' if TRUE or returns an error if FALSE
 #' @export
-is.R6 <- function(x) {
+is.R6 <- function(x) { # nolint
   inherits(x, c("R6", "R6ClassGenerator"))
 }
 
@@ -16,7 +16,7 @@ is.R6 <- function(x) {
 #' `R6ClassGenerator`, otherwise returns `x` invisibly on assertion if TRUE or
 #' returns an error if FALSE
 #' @export
-is.R6Class <- function(x) {
+is.R6Class <- function(x) { # nolint
   inherits(x, "R6ClassGenerator")
 }
 
@@ -26,13 +26,13 @@ is.R6Class <- function(x) {
 #' @return Either TRUE/FALSE is testing if `x` inherits from `R6`, otherwise
 #' returns `x` invisibly on assertion if TRUE or returns an error if FALSE
 #' @export
-is.R6Object <- function(x) {
+is.R6Object <- function(x) { # nolint
   inherits(x, "R6")
 }
 
 #' @rdname is.R6
 #' @export
-assert_R6 <- function(x) {
+assert_R6 <- function(x) { # nolint
   if (is.R6(x)) {
     invisible(x)
   } else {
@@ -42,7 +42,7 @@ assert_R6 <- function(x) {
 
 #' @rdname is.R6Object
 #' @export
-assert_R6Object <- function(x) {
+assert_R6Object <- function(x) { # nolint
   if (is.R6Object(x)) {
     invisible(x)
   } else {
@@ -52,7 +52,7 @@ assert_R6Object <- function(x) {
 
 #' @rdname is.R6Class
 #' @export
-assert_R6Class <- function(x) {
+assert_R6Class <- function(x) { # nolint
   if (is.R6Class(x)) {
     invisible(x)
   } else {
