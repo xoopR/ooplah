@@ -3,8 +3,28 @@
 #' instead of one of its descendants.
 #' @title Create an abstract R6 Class
 #' @name AbstractClass
-#' @details All arguments of [R6::R6Class] can be used as usual, see full
+#' @details An abstract class is a class that cannot be constructed directly.
+#' Instead they are used to define common fields/methods for child classes
+#' that inherit from them.
+#'
+#' All arguments of [R6::R6Class] can be used as usual, see full
 #' details at [R6::R6Class].
+#' @examples
+#' library(R6)
+#'
+#' ab <- AbstractClass("abstract", public = list(hello = "Hello World"))
+#' \dontrun{
+#' # errors
+#' ab$new()
+#' }
+#' child <- R6Class("child", inherit = ab)
+#' child$new()$hello
+#'
+#' @references
+#' Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1996).
+#' Design Patterns: Elements of Reusable Software.
+#' Addison-Wesley Professional Computing Series (p. 395).
+#'
 #' @export
 NULL
 
