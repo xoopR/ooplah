@@ -56,12 +56,27 @@ test_that("error on decorating existing methods", {
   expect_error(exists$new(oopl), "Fields/methods")
 })
 
-test_that("skip on decorating existing methods", {
+test_that("skip on decorating existing methods - $", {
   exists <- DecoratorClass("exists",
-    public = list(hello = function() "Oh no")
+    public = list(hello = function() "Oh no", goodbye = function() "Bye")
   )
-  expect_equal(exists$new(oopl, exists = "skip")$hello(),
-               "Hello World, Ooplah!")
+  dec <- exists$new(oopl, exists = "skip")
+  expect_equal(private(dec)$.exists, "skip")
+  expect_equal(dec$hello(), "Hello World, Ooplah!")
+  expect_equal(dec$goodbye(), "Bye")
+  expect_equal(dec$oop, "oop")
+})
+
+
+test_that("skip on decorating existing methods - [[", {
+  exists <- DecoratorClass("exists",
+    public = list(hello = function() "Oh no", goodbye = function() "Bye")
+  )
+  dec <- exists$new(oopl, exists = "skip")
+  expect_equal(private(dec)[[".exists"]], "skip")
+  expect_equal(dec[["hello"]](), "Hello World, Ooplah!")
+  expect_equal(dec[["goodbye"]](), "Bye")
+  expect_equal(dec[["oop"]], "oop")
 })
 
 test_that("skip on decorating existing methods - switch to field", {
@@ -70,11 +85,27 @@ test_that("skip on decorating existing methods - switch to field", {
                "Hello World, Ooplah!")
 })
 
-test_that("overwrite on decorating existing methods", {
-  exists <- DecoratorClass("exists", public  = list(hello = "Oh no"))
-  expect_equal(exists$new(oopl, exists = "overwrite")$hello, "Oh no")
+test_that("overwrite on decorating existing methods - $", {
+  exists <- DecoratorClass("exists",
+    public = list(hello = function() "Oh no", goodbye = function() "Bye")
+  )
+  dec <- exists$new(oopl, exists = "overwrite")
+  expect_equal(private(dec)$.exists, "overwrite")
+  expect_equal(dec$hello(), "Oh no")
+  expect_equal(dec$goodbye(), "Bye")
+  expect_equal(dec$oop, "oop")
 })
 
+test_that("overwrite on decorating existing methods - [[", {
+  exists <- DecoratorClass("exists",
+    public = list(hello = function() "Oh no", goodbye = function() "Bye")
+  )
+  dec <- exists$new(oopl, exists = "overwrite")
+  expect_equal(private(dec)[[".exists"]], "overwrite")
+  expect_equal(dec[["hello"]](), "Oh no")
+  expect_equal(dec[["goodbye"]](), "Bye")
+  expect_equal(dec[["oop"]], "oop")
+})
 
 test_that("can't clone a decorator", {
   oopl <- ooplah$new()
@@ -83,7 +114,10 @@ test_that("can't clone a decorator", {
   dec <- DecoratorClass("clone")$new(oopl)
 
   expect_equal(dec$clone, NULL)
-  expect_error(dec$clone(), "non-function")
+  expect_error(dec$clone(), "attempt to apply")
+
+  expect_equal(dec[["clone"]], NULL)
+  expect_error(dec[["clone"]](), "attempt to apply")
 
   # original clone still works
   oopl2 <- oopl$clone(deep = TRUE)

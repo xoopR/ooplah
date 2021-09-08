@@ -119,15 +119,8 @@ DecoratorClass <- function() {
         if (exists == "error") {
           stop(sprintf("Fields/methods already exist in %s: %s",
                        as.character(object), str_collapse(self_mf[which])))
-        } else if (exists == "skip") {
-          lapply(
-            self_mf[which],
-            function(x) {
-              unlockBinding(x, self)
-              assign(x, object[[x]], envir = self)
-              lockBinding(x, self)
-            }
-          )
+        } else {
+          private$.exists <- exists
         }
       }
 
@@ -144,37 +137,53 @@ DecoratorClass <- function() {
                                c("Decorator", "R6")),
                        c("Decorator", "R6"))
 
-      # Very hacky method to remove cloning from decorator and object.
-      # Essentially add the default method and then mask it.
-      unlockBinding("clone", self)
-      assign("clone", NULL, envir = self)
-      lockBinding("clone", self)
-
       invisible(self)
     }
   }
 
   args <- as.list(match.call()[-1])
+  args$private$.exists <- "error"
   args$public$initialize <- init(classname, self)
   args$abstract <- NULL
   args$inherit <- inherit
   if (!is.null(args$cloneable) && args$cloneable) {
     stop("Decorators are currently not cloneable.")
   }
-  args$cloneable <- TRUE
+  args$cloneable <- FALSE
+  args$lock_objects <- FALSE
+  args$lock_class <- FALSE
   do.call(R6::R6Class, args)
 }
 formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 
 #' @export
 `$.Decorator` <- function(x, name) { # nolint
-  if (!identical(out <- get0(name, x, ifnotfound = NA), NA)) {
-    out
+
+  if (name == ".__enclos_env__") {
+    return(NextMethod("$"))
+  } else if (name == "clone") {
+    return(NULL)
+  }
+
+  ## if skipping then search in parent environment first
+  if (private(x)$.exists == "skip") {
+    if (!identical(out <- get0(name, parent.env(x), ifnotfound = NA), NA)) {
+      out
+      ## then check main environment
+    } else if (!identical(out <- get0(name, x, ifnotfound = NA), NA)) {
+      out
+    }
+  } else {
+    ## if overwriting then get0 prioritises main
+    if (!identical(out <- get0(name, x, ifnotfound = NA), NA)) {
+      out
+    }
   }
 }
 
 #' @export
 `$<-.Decorator` <- function(x, i, j, ..., value) { # nolint
+
   if (exists(i, x, inherits = FALSE)) {
     NextMethod("$<-")
   } else {
@@ -186,8 +195,24 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
 
 #' @export
 `[[.Decorator` <- function(x, i, ...) { # nolint
-  if (!identical(out <- get0(i, x, ifnotfound = NA), NA)) {
-    out
+
+  if (i == "clone") {
+    return(NULL)
+  }
+
+  ## if skipping then search in parent environment first
+  if (private(x)[[".exists"]] == "skip") {
+    if (!identical(out <- get0(i, parent.env(x), ifnotfound = NA), NA)) {
+      out
+      ## then check main environment
+    } else if (!identical(out <- get0(i, x, ifnotfound = NA), NA)) {
+      out
+    }
+  } else {
+    ## if overwriting then get0 prioritises main
+    if (!identical(out <- get0(i, x, ifnotfound = NA), NA)) {
+      out
+    }
   }
 }
 
