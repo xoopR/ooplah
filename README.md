@@ -16,7 +16,7 @@ Status](https://www.repostatus.org/badges/latest/active.svg)](https://github.com
 
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ooplah)](https://cran.r-project.org/package=ooplah)
-[![codecov](https://codecov.io/gh/xoopR/ooplah/branch/master/graph/badge.svg)](https://codecov.io/gh/xoopR/ooplah)
+[![codecov](https://codecov.io/gh/xoopR/ooplah/branch/main/graph/badge.svg)](https://codecov.io/gh/xoopR/ooplah)
 [![dependencies](https://tinyverse.netlify.com/badge/ooplah)](https://CRAN.R-project.org/package=ooplah)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
