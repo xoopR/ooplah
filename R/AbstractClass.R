@@ -32,35 +32,35 @@ AbstractClass <- function() {
 
   args <- as.list(match.call()[-1])
   public <- args$public
-  abstract <- .abstract(classname)
-
-  if (length(public)) {
-    if (is.null(init <- public$initialize)) {
-      public$initialize <- function() abstract(self)
-    } else {
-      public$initialize <- function(...) {
-        abstract(self)
-        eval(init)(...)
-      }
+  args$private$ooplah <- new.env()
+  if (is.null(init <- public$initialize)) {
+    public$initialize <- function() {
+      private$ooplah$fabstract(self)
     }
   } else {
-    public <- list(initialize = function() abstract(self))
+    args$private$ooplah$init <- init
+    public$initialize <- function() {
+      private$ooplah$fabstract(self)
+      eval(private$ooplah$init)(as.list(match.call()[-1]))
+    }
+    formals(public$initialize) <- formals(eval(init))
   }
 
-
   args$public <- public
-  do.call(R6::R6Class, args)
-}
-formals(AbstractClass) <- formals(R6::R6Class)
-
-.abstract <- function(classname) {
-  function(self) {
-    if (object_class(self) == classname) {
+  args$parent_env <- args$parent_env %||% parent.frame()
+  args$private$ooplah$abstract <- classname
+  args$private$ooplah$fabstract <- function(obj) {
+    if (identical(classname <- object_class(obj),
+                  private(obj)$ooplah$abstract)) {
       stop(sprintf(
-        "'%s' is an abstract class that can't be initialized.", classname
-      ),
-      call. = FALSE
+          "'%s' is an abstract class that can't be initialized.",
+          classname
+        ),
+        call. = FALSE
       )
     }
   }
+
+  do.call(R6::R6Class, args)
 }
+formals(AbstractClass) <- formals(R6::R6Class)

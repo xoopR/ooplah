@@ -1,6 +1,6 @@
 Package: ooplah
 Title: Helper Functions for Class Object-Oriented Programming
-Version: 0.1.0
+Version: 0.2.0
 Authors@R:
     person(given = "Raphael",
            family = "Sonabend",

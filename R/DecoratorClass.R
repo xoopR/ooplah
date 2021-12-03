@@ -105,11 +105,9 @@ NULL
 
 DecoratorClass <- function() {
 
-  init <- function(classname, self) {
+  init <- function(self) {
     decorate <- function(object, exists = c("error", "skip", "overwrite")) {
-      if (abstract) {
-        .abstract(classname)(self)
-      }
+      private$ooplah$fabstract(self)
 
       exists <- match.arg(exists)
 
@@ -118,7 +116,7 @@ DecoratorClass <- function() {
       if (any(which)) {
         if (exists == "error") {
           stop(sprintf("Fields/methods already exist in %s: %s",
-                       as.character(object), str_collapse(self_mf[which])))
+                      as.character(object), str_collapse(self_mf[which])))
         } else {
           private$.exists <- exists
         }
@@ -126,16 +124,16 @@ DecoratorClass <- function() {
 
       parent.env(self) <- object
 
-      if (classname %in% class(object)) {
+      if (object_class(self) %in% class(object)) {
         stop(sprintf("%s is already decorated with %s", as.character(object),
-                     as.character(self)))
+                    as.character(self)))
       }
 
       ## Inherit from an abstract (in the truest sense of the word) 'Decorator'
       ##  class
       class(self) <- c(setdiff(c(setdiff(class(self), "R6"), class(object)),
-                               c("Decorator", "R6")),
-                       c("Decorator", "R6"))
+                              c("Decorator", "R6")),
+                      c("Decorator", "R6"))
 
       invisible(self)
     }
@@ -143,15 +141,31 @@ DecoratorClass <- function() {
 
   args <- as.list(match.call()[-1])
   args$private$.exists <- "error"
-  args$public$initialize <- init(classname, self)
+  args$public$initialize <- init(self)
   args$abstract <- NULL
-  args$inherit <- inherit
   if (!is.null(args$cloneable) && args$cloneable) {
     stop("Decorators are currently not cloneable.")
   }
+  args$parent_env <- args$parent_env %||% parent.frame()
   args$cloneable <- FALSE
   args$lock_objects <- FALSE
   args$lock_class <- FALSE
+  if (abstract) {
+    args$private$ooplah$abstract <- classname
+  } else {
+    args$private$ooplah$abstract <- NULL
+  }
+  args$private$ooplah$fabstract <- function(obj) {
+    if (identical(classname <- object_class(obj),
+                  private(obj)$ooplah$abstract)) {
+      stop(sprintf(
+          "'%s' is an abstract class that can't be initialized.",
+          classname
+        ),
+        call. = FALSE
+      )
+    }
+  }
   do.call(R6::R6Class, args)
 }
 formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))

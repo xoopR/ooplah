@@ -6,7 +6,8 @@ dec <- DecoratorClass("dec",
   active = list(test = function(x) {
     if (missing(x)) private$.test else private$.test <- x
   }),
-  private = list(.test = FALSE), abstract = TRUE
+  private = list(.test = FALSE),
+  abstract = TRUE
 )
 dec_child <- DecoratorClass("dec_child", inherit = dec)
 obj_dec <- dec_child$new(oopl)
