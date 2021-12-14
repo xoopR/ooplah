@@ -41,7 +41,7 @@ AbstractClass <- function() {
     args$private$ooplah$init <- init
     public$initialize <- function() {
       private$ooplah$fabstract(self)
-      eval(private$ooplah$init)(as.list(match.call()[-1]))
+      do.call(eval(private$ooplah$init), as.list(match.call()[-1]))
     }
     formals(public$initialize) <- formals(eval(init))
   }

@@ -18,10 +18,10 @@ is made clearer in examples.
 There are three possibilities when trying to decorate an object with a
 field/method that already exists:
 \enumerate{
-\item \code{exists = "error"} (default) - This will throw an error and prevent the
+\item \code{exists = "skip"} (default) - This will decorate the object with all
+fields/methods that don't already exist
+\item \code{exists = "error"} - This will throw an error and prevent the
 object being decorated
-\item \code{exists = "skip"} - This will decorate the object with all fields/methods
-that don't already exist
 \item \code{exists = "overwrite"} - This will decorate the object with all
 fields/methods from the decorator and overwrite ones with the same name
 if they already exist
@@ -45,8 +45,9 @@ dec2 <- DecoratorClass("dec2", public = list(goodbye = "Goodbye World"))
 oop <- ooplah$new()
 oop$hello()
 
+
 ## Decorate with dec1 by constructing dec1 with object oop:
-dec_oop <- dec1$new(oop)
+dec_oop <- dec1$new(oop) # equiv `decorate(oop, dec1)`
 ## We have all original methods from oop
 dec_oop$hello()
 # It's inherited methods
@@ -78,15 +79,15 @@ oop <- ooplah$new()
 exists_dec <- DecoratorClass("exists_dec",
   public = list(hello = function() "Hi!"))
 
-# 1. error (default)
+# 1. skip (default)
+oop$hello()
+exists_dec$new(oop, exists = "skip")$hello()
+
+# 2. error
 \dontrun{
 exists_dec$new(oop)
 exists_dec$new(oop, exists = "error")
 }
-
-# 2. skip
-oop$hello()
-exists_dec$new(oop, exists = "skip")$hello()
 
 # 3. overwrite
 oop$hello()
@@ -105,4 +106,7 @@ dec_oop$logically
 Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1996).
 Design Patterns: Elements of Reusable Software.
 Addison-Wesley Professional Computing Series (p. 395).
+}
+\seealso{
+\link{decorate}
 }

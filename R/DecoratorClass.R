@@ -13,10 +13,10 @@
 #' There are three possibilities when trying to decorate an object with a
 #' field/method that already exists:
 #'
-#' 1. `exists = "error"` (default) - This will throw an error and prevent the
+#' 1. `exists = "skip"` (default) - This will decorate the object with all
+#' fields/methods that don't already exist
+#' 2. `exists = "error"` - This will throw an error and prevent the
 #' object being decorated
-#' 2. `exists = "skip"` - This will decorate the object with all fields/methods
-#' that don't already exist
 #' 3. `exists = "overwrite"` - This will decorate the object with all
 #' fields/methods from the decorator and overwrite ones with the same name
 #' if they already exist
@@ -30,6 +30,9 @@
 #' Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1996).
 #' Design Patterns: Elements of Reusable Software.
 #' Addison-Wesley Professional Computing Series (p. 395).
+#'
+#' @seealso
+#' [decorate]
 #'
 #' @export
 #'
@@ -46,8 +49,9 @@
 #' oop <- ooplah$new()
 #' oop$hello()
 #'
+#'
 #' ## Decorate with dec1 by constructing dec1 with object oop:
-#' dec_oop <- dec1$new(oop)
+#' dec_oop <- dec1$new(oop) # equiv `decorate(oop, dec1)`
 #' ## We have all original methods from oop
 #' dec_oop$hello()
 #' # It's inherited methods
@@ -79,15 +83,15 @@
 #' exists_dec <- DecoratorClass("exists_dec",
 #'   public = list(hello = function() "Hi!"))
 #'
-#' # 1. error (default)
+#' # 1. skip (default)
+#' oop$hello()
+#' exists_dec$new(oop, exists = "skip")$hello()
+#'
+#' # 2. error
 #' \dontrun{
 #' exists_dec$new(oop)
 #' exists_dec$new(oop, exists = "error")
 #' }
-#'
-#' # 2. skip
-#' oop$hello()
-#' exists_dec$new(oop, exists = "skip")$hello()
 #'
 #' # 3. overwrite
 #' oop$hello()
@@ -106,7 +110,7 @@ NULL
 DecoratorClass <- function() {
 
   init <- function(self) {
-    decorate <- function(object, exists = c("error", "skip", "overwrite")) {
+    function(object, exists = c("skip", "error", "overwrite")) {
       private$ooplah$fabstract(self)
 
       exists <- match.arg(exists)
@@ -118,11 +122,14 @@ DecoratorClass <- function() {
           stop(sprintf("Fields/methods already exist in %s: %s",
                       as.character(object), str_collapse(self_mf[which])))
         } else {
-          private$.exists <- exists
+          private$ooplah$.exists <- exists
         }
       }
 
       parent.env(self) <- object
+
+      private$ooplah$decorators <- c(private(object)$ooplah$decorators,
+                                    object_class(self))
 
       if (object_class(self) %in% class(object)) {
         stop(sprintf("%s is already decorated with %s", as.character(object),
@@ -135,12 +142,19 @@ DecoratorClass <- function() {
                               c("Decorator", "R6")),
                       c("Decorator", "R6"))
 
+      for (nm in names(private(object))) {
+        if (nm != "ooplah") {
+          private[[nm]] <- private(object)[[nm]]
+        }
+      }
+
       invisible(self)
     }
   }
 
   args <- as.list(match.call()[-1])
-  args$private$.exists <- "error"
+  args$private$ooplah <- new.env()
+  args$private$ooplah$.exists <- "error"
   args$public$initialize <- init(self)
   args$abstract <- NULL
   if (!is.null(args$cloneable) && args$cloneable) {
@@ -180,7 +194,7 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
   }
 
   ## if skipping then search in parent environment first
-  if (private(x)$.exists == "skip") {
+  if (private(x)$ooplah$.exists == "skip") {
     if (!identical(out <- get0(name, parent.env(x), ifnotfound = NA), NA)) {
       out
       ## then check main environment
@@ -215,7 +229,7 @@ formals(DecoratorClass) <- c(formals(R6::R6Class), alist(abstract = FALSE))
   }
 
   ## if skipping then search in parent environment first
-  if (private(x)[[".exists"]] == "skip") {
+  if (private(x)[["ooplah"]][[".exists"]] == "skip") {
     if (!identical(out <- get0(i, parent.env(x), ifnotfound = NA), NA)) {
       out
       ## then check main environment
