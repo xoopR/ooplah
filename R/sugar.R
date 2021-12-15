@@ -11,6 +11,7 @@
 #' that don't already exist. 3. `exists = "overwrite"` - This will decorate
 #' the object with all fields/methods from the decorator and overwrite ones
 #' with the same name if they already exist.
+#' @param ... `ANY` \cr Additional arguments passed to [get].
 #'
 #' @seealso
 #' [DecoratorClass]
@@ -23,7 +24,7 @@
 #' dec2 <- DecoratorClass("dec2", public = list(goodbye2 = "Goodbye World 2"))
 #'
 #' oop <- ooplah$new()
-#' dec$goodbye
+#' oop$goodbye
 #' dec_oop <- decorate(oop, c(dec1, dec2))
 #' dec_oop$goodbye
 #' dec_oop$goodbye2
@@ -34,10 +35,10 @@
 #'
 #' @export
 decorate <- function(object, decorators,
-                    exists = c("skip", "error", "overwrite")) {
+                    exists = c("skip", "error", "overwrite"), ...) {
   for (decorator in decorators) {
     if (is.character(decorator)) {
-      object <- get(decorator)$new(object, exists)
+      object <- get(decorator, ...)$new(object, exists) # nocov
     } else {
       object <- decorator$new(object, exists)
     }

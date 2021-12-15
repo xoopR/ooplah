@@ -155,13 +155,3 @@ test_that("decorate sugar - env", {
 
   expect_identical(d1, d2)
 })
-
-test_that("decorate sugar - string", {
-  oop <- ooplah$new()
-  d1 <- decorate(oop, c("dec_child", "dec_child2"))
-
-  oop <- ooplah$new()
-  d2 <- decorate(oop, c("dec_child", "dec_child2"))
-
-  expect_identical(d1, d2)
-})

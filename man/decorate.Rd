@@ -4,13 +4,13 @@
 \alias{decorate}
 \title{Sugar function for decoration}
 \usage{
-decorate(object, decorator, exists = c("skip", "error", "overwrite"))
+decorate(object, decorators, exists = c("skip", "error", "overwrite"), ...)
 }
 \arguments{
 \item{object}{\verb{[R6::R6Class]} \cr R6 class to decorate.}
 
-\item{decorator}{\verb{([DecorateClass]|character(1))} \cr
-Decorator (or its name) to decorate with.}
+\item{decorators}{\verb{([DecorateClass]|character())} \cr
+One or more decorators (by name or class) to decorate with.}
 
 \item{exists}{\verb{(character(1)} \cr Expected behaviour if method exists in
 \code{object} and \code{decorator}. One of: 1. \code{exists = "error"} (default) - This
@@ -19,6 +19,8 @@ will throw an error and prevent the object being decorated.
 that don't already exist. 3. \code{exists = "overwrite"} - This will decorate
 the object with all fields/methods from the decorator and overwrite ones
 with the same name if they already exist.}
+
+\item{...}{\code{ANY} \cr Additional arguments passed to \link{get}.}
 }
 \description{
 Simple wrapper around \code{decorator$new(object, exists)}
@@ -26,17 +28,19 @@ Simple wrapper around \code{decorator$new(object, exists)}
 \examples{
 library(R6)
 
-## Define decorator
-dec <- DecoratorClass("dec", public = list(goodbye = "Goodbye World"))
+## Define decorators
+dec1 <- DecoratorClass("dec1", public = list(goodbye = "Goodbye World"))
+dec2 <- DecoratorClass("dec2", public = list(goodbye2 = "Goodbye World 2"))
 
 oop <- ooplah$new()
-dec$goodbye
-dec_oop <- decorate(oop, dec)
+oop$goodbye
+dec_oop <- decorate(oop, c(dec1, dec2))
 dec_oop$goodbye
+dec_oop$goodbye2
 
 ## Equivalently
 oop <- ooplah$new()
-decorate(oop, "dec")
+decorate(oop, c("dec1", "dec2"))
 
 }
 \seealso{
