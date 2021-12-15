@@ -53,16 +53,16 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">decorate</span><span class="op">(</span><span class="va">object</span>, <span class="va">decorator</span>, exists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"skip"</span>, <span class="st">"error"</span>, <span class="st">"overwrite"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">decorate</span><span class="op">(</span><span class="va">object</span>, <span class="va">decorators</span>, exists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"skip"</span>, <span class="st">"error"</span>, <span class="st">"overwrite"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p><code>[R6::R6Class]</code> <br> R6 class to decorate.</p></dd>
-<dt>decorator</dt>
-<dd><p><code>([DecorateClass]|character(1))</code> <br>
-Decorator (or its name) to decorate with.</p></dd>
+<dt>decorators</dt>
+<dd><p><code>([DecorateClass]|character())</code> <br>
+One or more decorators (by name or class) to decorate with.</p></dd>
 <dt>exists</dt>
 <dd><p><code>(character(1)</code> <br> Expected behaviour if method exists in
 <code>object</code> and <code>decorator</code>. One of: 1. <code>exists = "error"</code> (default) - This
@@ -71,6 +71,8 @@ will throw an error and prevent the object being decorated.
 that don't already exist. 3. <code>exists = "overwrite"</code> - This will decorate
 the object with all fields/methods from the decorator and overwrite ones
 with the same name if they already exist.</p></dd>
+<dt>...</dt>
+<dd><p><code>ANY</code> <br> Additional arguments passed to <a href="https://rdrr.io/r/base/get.html" class="external-link">get</a>.</p></dd>
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -81,21 +83,23 @@ with the same name if they already exist.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r6.r-lib.org" class="external-link">R6</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co">## Define decorator</span></span>
-<span class="r-in"><span class="va">dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="DecoratorClass.html">DecoratorClass</a></span><span class="op">(</span><span class="st">"dec"</span>, public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>goodbye <span class="op">=</span> <span class="st">"Goodbye World"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="co">## Define decorators</span></span>
+<span class="r-in"><span class="va">dec1</span> <span class="op">&lt;-</span> <span class="fu"><a href="DecoratorClass.html">DecoratorClass</a></span><span class="op">(</span><span class="st">"dec1"</span>, public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>goodbye <span class="op">=</span> <span class="st">"Goodbye World"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dec2</span> <span class="op">&lt;-</span> <span class="fu"><a href="DecoratorClass.html">DecoratorClass</a></span><span class="op">(</span><span class="st">"dec2"</span>, public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>goodbye2 <span class="op">=</span> <span class="st">"Goodbye World 2"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">oop</span> <span class="op">&lt;-</span> <span class="va"><a href="ooplah.html">ooplah</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dec</span><span class="op">$</span><span class="va">goodbye</span></span>
+<span class="r-in"><span class="va">oop</span><span class="op">$</span><span class="va">goodbye</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="va">dec_oop</span> <span class="op">&lt;-</span> <span class="fu">decorate</span><span class="op">(</span><span class="va">oop</span>, <span class="va">dec</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in for (decorator in decorators) {    if (is.character(decorator)) {        object &lt;- get(decorator)$new(object, exists)    }    else {        object &lt;- decorator$new(object, exists)    }}:</span> invalid for() loop sequence</span>
+<span class="r-in"><span class="va">dec_oop</span> <span class="op">&lt;-</span> <span class="fu">decorate</span><span class="op">(</span><span class="va">oop</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">dec1</span>, <span class="va">dec2</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dec_oop</span><span class="op">$</span><span class="va">goodbye</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'dec_oop' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Goodbye World"</span>
+<span class="r-in"><span class="va">dec_oop</span><span class="op">$</span><span class="va">goodbye2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Goodbye World 2"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Equivalently</span></span>
 <span class="r-in"><span class="va">oop</span> <span class="op">&lt;-</span> <span class="va"><a href="ooplah.html">ooplah</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">decorate</span><span class="op">(</span><span class="va">oop</span>, <span class="st">"dec"</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get(decorator):</span> object 'dec' not found</span>
+<span class="r-in"><span class="fu">decorate</span><span class="op">(</span><span class="va">oop</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dec1"</span>, <span class="st">"dec2"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get(decorator, ...):</span> object 'dec1' not found</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
