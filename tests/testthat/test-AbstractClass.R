@@ -4,6 +4,7 @@ test_that("can create an abstract class", {
   abs <- AbstractClass("abstract",
                        public = list(initialize = function(x) cat("hi")))
   expect_output(R6Class("child", inherit = abs)$new(), "hi")
+  expect_error(abs$new(), "is an abstract class")
 })
 
 test_that("can't construct an abstract class", {
