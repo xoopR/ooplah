@@ -3,10 +3,7 @@ ooplah
 
 <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-[![CRAN Status
-Badge](https://www.r-pkg.org/badges/version-ago/ooplah)](https://cran.r-project.org/package=ooplah)
-[![CRAN
-Checks](https://cranchecks.info/badges/worst/ooplah)](https://cran.r-project.org/web/checks/check_results_ooplah.html)
+[![ooplah status badge](https://raphaels1.r-universe.dev/badges/ooplah)](https://raphaels1.r-universe.dev)
 [![R-CMD-check /
 codecov](https://github.com/xoopR/ooplah/actions/workflows/check-covr.yml/badge.svg?branch=main)](https://github.com/xoopR/ooplah/actions/workflows/check-covr.yml)
 
